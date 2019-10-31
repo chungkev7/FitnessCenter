@@ -29,29 +29,31 @@ public class MainApp {
 		membersMap.put(person1.getId(), person1);
 		membersMap.put(person2.getId(), person2);
 
-		String cont = "yes";
-
-		while (cont.toLowerCase().startsWith("y")) {
-			// your code should start here!
-			String userResponse = Validator.getString(scnr, "Are you a new or returning member?").toLowerCase();
-			if (userResponse.equals("n")) {
-
-				addNewMember(clubsList, membersMap, scnr);
-
-			} else if (userResponse.equals("r")) {
+		int action = 0;
+		String userId = "";
+		int clubChoice = 0;
+		
+		do {
+			String prompt = "Please choose from the following options:\n1. Check in\n2. Sign up for membership"
+					+ "\n3. Get bill\n4. Search member database\n5. Cancel membership\n6. Quit ";
+			action = Validator.getInt(scnr, prompt, 1, 6);
+			
+			switch (action) {
+			case 1:
 				int counter = 1;
 				for (Club c : clubsList) {
 					System.out.printf("%d. %s\n", counter++, c.getName());
 				}
 
-				int clubChoice = Validator.getInt(scnr, "Enter the branch number: ");
-				String userId = Validator.getString(scnr, "Please enter your two digit ID: ");
+				clubChoice = Validator.getInt(scnr, "Enter the branch number: ");
+				userId = Validator.getString(scnr, "Please enter your two digit ID: ");
 
 				if (membersMap.containsKey(userId)) {
 					try {
-						membersMap.get(userId).setCheckedIn(true);
+						// 
+						membersMap.get(userId).checkIn(clubsList.get(1));
 						System.out.println("Welcome " + membersMap.get(userId).getName());
-
+						
 					} catch (Exception e) {
 						System.out.println("Something went terribly wrong. Our bad.");
 
@@ -60,16 +62,40 @@ public class MainApp {
 					System.out.println("You are not currently in our system. Please see the Welcome Desk.");
 
 				}
+				break;
+			case 2:
+				addNewMember(clubsList, membersMap, scnr);
+				break;
+			case 3:
+				
+				break;
+			case 4:
+				userId = Validator.getString(scnr, "Please enter your two digit ID: ");
+				System.out.println(membersMap.get(userId));
+				break;
+			case 5:
+				userId = Validator.getString(scnr, "Please enter your two digit ID: ");
 
-			}
-			System.out.println("Do you want to continue (yes/no)");
-			cont = scnr.nextLine();
-		}
-		for (Members m : clubsList.get(3).getMembers()) {
-			System.out.println(m);
-		}
+				if (membersMap.containsKey(userId)) {
+					try {
+						System.out.println("We're sorry to see you go. ");
+						membersMap.remove(userId);
+						
+					} catch (Exception e) {
+						System.out.println("Something went terribly wrong. Our bad.");
 
-		// This is our indication that the program has ended
+					}
+				} else {
+					System.out.println("You are not currently in our system. Please see the Welcome Desk.");
+
+				}
+				break;
+			case 6:
+				break;
+			} 
+
+		} while (action != 6);
+		
 		System.out.println("Goodbye!");
 
 	}

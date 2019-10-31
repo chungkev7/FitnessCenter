@@ -22,7 +22,8 @@ public class Single extends Members {
 
 	@Override
 	public boolean checkIn(Club club) {
-		return false;
+		super.checkedIn = true;
+		return true;
 	}
 
 

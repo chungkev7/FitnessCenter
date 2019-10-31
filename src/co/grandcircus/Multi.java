@@ -21,7 +21,9 @@ public class Multi extends Members {
 
 	@Override
 	public boolean checkIn(Club club) {
-		return false;
+		super.checkedIn = true;
+		points++;
+		return true;
 	}
 
 }
