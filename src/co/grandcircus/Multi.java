@@ -12,8 +12,9 @@ public class Multi extends Members {
 	public Multi() {
 	}
 
-	public Multi(String id, String name, boolean checkedIn, double monthlyFee, int points) {
-		super(id, name, checkedIn, monthlyFee);
+	public Multi(String id, String name, int points) {
+		super(id, name);
+		super.setMonthlyFee(99.99);
 		this.points = points;
 		List<Club> clubs = new ArrayList<>();
 	}

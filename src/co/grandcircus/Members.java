@@ -5,17 +5,16 @@ public abstract class Members {
 	private String name;
 	boolean checkedIn;
 	double monthlyFee;
-
+	
 	public Members() {
 		super();
 	}
 
-	public Members(String id, String name, boolean checkedIn, double monthlyFee) {
+	public Members(String id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.checkedIn = checkedIn;
-		this.monthlyFee = monthlyFee;
+		this.checkedIn = false;
 	}
 
 	public abstract boolean checkIn(Club club);

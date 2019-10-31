@@ -7,8 +7,9 @@ public class Single extends Members {
 	public Single() {
 	}
 
-	public Single(String id, String name, boolean checkedIn, double monthlyFee) {
-		super(id, name, checkedIn, monthlyFee);
+	public Single(String id, String name) {
+		super(id, name);
+		super.setMonthlyFee(15.05);
 	}
 
 	public Club getClub() {
