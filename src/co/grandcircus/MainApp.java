@@ -24,21 +24,15 @@ public class MainApp {
 		clubsList.add(new Club("Lunk-free Zone", "333 Fourth St"));
 
 		System.out.println("Welcome to a new and fitter version of you!");
-		Members person1 = new Single("12", "Tony");
-		clubsList.get(3).getMembers().add(person1);
-		Members person2 = new Multi("21", "George", 0);
-		membersMap.put(person1.getId(), person1);
-		membersMap.put(person2.getId(), person2);
-
 		int action = 0;
 		String userId = "";
 		int clubChoice = 0;
-		
+
 		do {
 			String prompt = "Please choose from the following options:\n1. Check in\n2. Sign up for membership"
-					+ "\n3. Get bill\n4. Search member database\n5. Cancel membership\n6. Quit ";
+					+ "\n3. Get bill\n4. Search member database\n5. Cancel membership\n6. Add Club\n7. Quit \n";
 			action = Validator.getInt(scnr, prompt, 1, 6);
-			
+
 			switch (action) {
 			case 1:
 				int counter = 1;
@@ -71,24 +65,43 @@ public class MainApp {
 				addNewMember(clubsList, membersMap, scnr);
 				break;
 			case 3:
-				
+				String billingId = Validator.getString(scnr, "Please enter your Member ID: ");
+				if (membersMap.get(billingId) instanceof Single) {
+					double bill = membersMap.get(billingId).getMonthlyFee();
+					System.out.println("Your bill this month is: " + bill);
+				} else if (membersMap.get(billingId) instanceof Multi) {
+					double bill = membersMap.get(billingId).getMonthlyFee();
+					int points = ((Multi) membersMap.get(billingId)).getPoints();
+					System.out.println("Your bill this month is: " + bill);
+					System.out.println("You have " + points + " points");
+				}
 				break;
 			case 4:
 				String userPrompt = "Welcome to the members database!\nWould you like to search by:\n"
 						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu";
-				int userAction = Validator.getInt(scnr, userPrompt, 1, 4);
-				switch (userAction) {
+				int searchAction = Validator.getInt(scnr, userPrompt, 1, 4);
+				switch (searchAction) {
 				case 1:
 					userId = Validator.getString(scnr, "Please enter your member ID: ");
-					System.out.println(membersMap.get(userId));
+					if (membersMap.containsKey(userId)) {
+						System.out.println(membersMap.get(userId));
+
+					} else {
+						System.out.println("Not in database.");
+					}
 					break;
 				case 2:
 					String userName = Validator.getString(scnr, "Please enter your name: ");
+					ArrayList<Members> foundMembers = new ArrayList<>();
 					for (Members m : membersMap.values()) {
 						if (m.getName().equals(userName)) {
-							System.out.println(m);
-							break;
-						} //fix me here - if user is not here
+							foundMembers.add(m);
+						}
+					}
+					if (foundMembers.size() == 0) {
+						System.out.println("Sorry, you are not in our system!");
+					} else {
+						System.out.println(foundMembers);
 					}
 					break;
 				case 3:
@@ -104,40 +117,30 @@ public class MainApp {
 				case 4:
 					break;
 				}
-				break;
 			case 5:
-				userId = Validator.getString(scnr, "Please enter your member ID: ");
-
-				if (membersMap.containsKey(userId)) {
-					try {
-						System.out.println("We're sorry to see you go. ");
-						membersMap.remove(userId);
-						
-					} catch (Exception e) {
-						System.out.println("Something went terribly wrong. Our bad.");
-
-					}
-				} else {
-					System.out.println("You are not currently in our system. Please see the Welcome Desk.");
-
-				}
+				removeUser(scnr, userId, membersMap);
 				break;
 			case 6:
+				String name = Validator.getString(scnr, "Enter the club name: ");
+				String address = Validator.getString(scnr, "Enter club address: ");
+				clubsList.add(new Club(name, address));
 				break;
-			} 
+			case 7:
+				checkOutAll(membersMap);
+				break;
+			}
 
-		} while (action != 6);
-		
+		} while (action != 7);
+
 		System.out.println("Goodbye!");
 		for (Members t : membersMap.values()) {
 			System.out.println(t);
 		}
-
 	}
-	
+
 	public static String generateID(String name) {
-		Random rand = new Random();
-		return name.substring(0, 1) + (rand.nextInt(900)+100);
+		Random rndm = new Random();
+		return name.substring(0, 1) + (rndm.nextInt(900) + 100);
 	}
 
 	public static void addNewMember(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr) {
@@ -152,7 +155,8 @@ public class MainApp {
 			for (Club c : clubsList) {
 				System.out.printf("%d. %s\n", clubCounter++, c.getName());
 			}
-			int userChoice = Validator.getInt(scnr, "Select which club you would like to join. (Choose a number) ", 1, clubsList.size());
+			int userChoice = Validator.getInt(scnr, "Select which club you would like to join. (Choose a number) ", 1,
+					clubsList.size());
 			System.out.println("You selected: " + clubsList.get(userChoice - 1));
 			clubsList.get(userChoice - 1).getMembers().add(m);
 			((Single) m).setClub(clubsList.get(userChoice - 1));
@@ -174,6 +178,31 @@ public class MainApp {
 			}
 			((Multi) m).setClubs(clubsList);
 			System.out.println("This is your new Club ID: " + ID + ". Please remember it. ");
+		}
+	}
+
+	public static void removeUser(Scanner scnr, String userId, Map<String, Members> membersMap) {
+
+		userId = Validator.getString(scnr, "Please enter your member ID: ");
+
+		if (membersMap.containsKey(userId)) {
+			try {
+				System.out.println("We're sorry to see you go. ");
+				membersMap.remove(userId);
+
+			} catch (Exception e) {
+				System.out.println("Something went terribly wrong. Our bad.");
+
+			}
+		} else {
+			System.out.println("You are not currently in our system. Please see the Welcome Desk.");
+
+		}
+	}
+
+	public static void checkOutAll(Map<String, Members> membersMap) {
+		for (Members m : membersMap.values()) {
+			m.setCheckedIn(false);
 		}
 	}
 }
