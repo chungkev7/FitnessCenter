@@ -160,8 +160,12 @@ public class MainApp {
 					System.out.println();
 					int userClubChoice = Validator.getInt(scnr, "Please choose a club: ", 1, clubsList.size());
 					System.out.println();
-					for (Members m : clubsList.get(userClubChoice - 1).getMembers()) {
-						System.out.printf("%s %s\n%s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName() );
+					if (clubsList.get(userClubChoice - 1).getMembers().isEmpty()) {
+						System.out.println("There are currently no members attending this club");
+					} else {
+						for (Members m : clubsList.get(userClubChoice - 1).getMembers()) {
+							System.out.printf("%s %s\n%s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName() );
+						}
 					}
 					System.out.println();
 					break;
