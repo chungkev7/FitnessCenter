@@ -14,7 +14,6 @@ public class Single extends Members {
 		super.setMonthlyFee(15.05);
 	}
 
-	//Getters and Setters
 	public Club getClub() {
 		return club;
 	}
@@ -25,9 +24,13 @@ public class Single extends Members {
 
 	@Override
 	public boolean checkIn(Club club) {
+		try {
 		if (getClub().equals(club)) {
 			super.setCheckedIn(true);
 		} else {
+			throw new Exception();
+		}
+		} catch (Exception e) {
 			System.out.println("Unable to check in.");
 		}
 		return false;
