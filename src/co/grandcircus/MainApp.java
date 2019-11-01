@@ -4,6 +4,7 @@
 package co.grandcircus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -23,22 +24,24 @@ public class MainApp {
 		clubsList.add(new Club("The Jacked Ones", "532 Mount Branch"));
 		clubsList.add(new Club("Lunk-free Zone", "333 Fourth St"));
 
-		System.out.println("Welcome to a new and fitter version of you!");
+		System.out.println("Welcome to a new and fitter version of you!\n");
 		int action = 0;
 		String userId = "";
 		int clubChoice = 0;
 
 		do {
-			String prompt = "Please choose from the following options:\n1. Check in\n2. Sign up for membership"
-					+ "\n3. Get bill\n4. Search member database\n5. Cancel membership\n6. Add Club\n7. Quit \n";
-			action = Validator.getInt(scnr, prompt, 1, 6);
+			String prompt = "Please choose from the following options:\n\n1. Check in\n2. Sign up for membership"
+					+ "\n3. Get bill\n4. Search Member Database\n5. Cancel membership\n6. Add Club\n7. Quit \n";
+			action = Validator.getInt(scnr, prompt, 1, 7);
 
 			switch (action) {
 			case 1:
 				int counter = 1;
+				System.out.println("");
 				for (Club c : clubsList) {
 					System.out.printf("%d. %s\n", counter++, c.getName());
 				}
+				System.out.println("1");
 
 				clubChoice = Validator.getInt(scnr, "Enter the branch number: ", 1, clubsList.size());
 				userId = Validator.getString(scnr, "Please enter your member ID: ");
@@ -58,7 +61,7 @@ public class MainApp {
 						System.out.println("Sorry, you're not in our system.");
 					}
 				} else {
-					System.out.println("Please see the Welcome Desk.");
+					System.out.println("\nPlease see the Welcome Desk.");
 				}
 				break;
 			case 2:
@@ -68,23 +71,44 @@ public class MainApp {
 				String billingId = Validator.getString(scnr, "Please enter your Member ID: ");
 				if (membersMap.get(billingId) instanceof Single) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
-					System.out.println("Your bill this month is: " + bill);
+					System.out.println("\nYour bill this month is: $" + bill);
 				} else if (membersMap.get(billingId) instanceof Multi) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
 					int points = ((Multi) membersMap.get(billingId)).getPoints();
-					System.out.println("Your bill this month is: " + bill);
-					System.out.println("You have " + points + " points");
+					System.out.println("\nYour bill this month is: $" + bill);
+					System.out.println("You have " + points + " points\n");
 				}
 				break;
 			case 4:
-				String userPrompt = "Welcome to the members database!\nWould you like to search by:\n"
-						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu";
+				String userPrompt = "Welcome to the Member Database!\n\nWould you like to search by:\n\n"
+						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu\n";
 				int searchAction = Validator.getInt(scnr, userPrompt, 1, 4);
 				switch (searchAction) {
 				case 1:
 					userId = Validator.getString(scnr, "Please enter your member ID: ");
 					if (membersMap.containsKey(userId)) {
-						System.out.println(membersMap.get(userId));
+						if (membersMap.get(userId) instanceof Single) {
+							String[] memberInfo = membersMap.get(userId).toString().split(",");
+							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
+									, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3], "Club info:", memberInfo[4] + " " + memberInfo[5]);
+						} else if (membersMap.get(userId) instanceof Multi) {
+							String[] memberInfo = membersMap.get(userId).toString().split(",");
+							List<String> clubNames = new ArrayList<>();
+							for (Club c : ((Multi)membersMap.get(userId)).getClubs()) {
+								clubNames.add(c.getName());
+							}
+							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
+									, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3]);
+							System.out.print("Clubs: ");
+							for (int i = 0; i < clubNames.size(); ++i) {
+								if (i < clubNames.size()-1) {
+									System.out.print(clubNames.get(i) + ", ");
+								} else {
+									System.out.print(clubNames.get(i));
+								}
+							}
+							System.out.println("\n");
+						}
 
 					} else {
 						System.out.println("Not in database.");
@@ -101,22 +125,50 @@ public class MainApp {
 					if (foundMembers.size() == 0) {
 						System.out.println("Sorry, you are not in our system!");
 					} else {
-						System.out.println(foundMembers);
+						for (Members m : foundMembers) {
+							if (m instanceof Single) {
+								String[] memberInfo = m.toString().split(",");
+								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
+										, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3], "Club info:", memberInfo[4] + " " + memberInfo[5]);
+							} else if (m instanceof Multi) {
+								String[] memberInfo = m.toString().split(",");
+								List<String> clubNames = new ArrayList<>();
+								for (Club c : ((Multi)m).getClubs()) {
+									clubNames.add(c.getName());
+								}
+								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
+										, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3]);
+								System.out.print("Clubs: ");
+								for (int i = 0; i < clubNames.size(); ++i) {
+									if (i < clubNames.size()-1) {
+										System.out.print(clubNames.get(i) + ", ");
+									} else {
+										System.out.print(clubNames.get(i));
+									}
+								}
+								System.out.println("\n");
+							}
+						}
 					}
 					break;
 				case 3:
 					int clubCounter = 1;
+					System.out.println();
 					for (Club c : clubsList) {
 						System.out.printf("%d. %s\n", clubCounter++, c.getName());
 					}
+					System.out.println();
 					int userClubChoice = Validator.getInt(scnr, "Please choose a club: ", 1, clubsList.size());
+					System.out.println();
 					for (Members m : clubsList.get(userClubChoice - 1).getMembers()) {
-						System.out.println(m);
+						System.out.printf("%s %s\n%s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName() );
 					}
+					System.out.println();
 					break;
 				case 4:
 					break;
 				}
+				break;
 			case 5:
 				removeUser(scnr, userId, membersMap);
 				break;
@@ -133,17 +185,15 @@ public class MainApp {
 		} while (action != 7);
 
 		System.out.println("Goodbye!");
-		for (Members t : membersMap.values()) {
-			System.out.println(t);
-		}
 	}
 
 	public static String generateID(String name) {
 		Random rndm = new Random();
-		return name.substring(0, 1) + (rndm.nextInt(900) + 100);
+		return name.substring(0, 1).toUpperCase() + (rndm.nextInt(900) + 100);
 	}
 
 	public static void addNewMember(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr) {
+		System.out.println("These are your options: \n\nSingle Membership: $15.05 per month (One Club)\nMulti Membership: $99.99 per month (Full Access)\n");
 		String membershipChoice = Validator
 				.getString(scnr, "Are you interested in our single or multi-club membership? ").toLowerCase();
 		if (membershipChoice.startsWith("s")) {
@@ -152,33 +202,35 @@ public class MainApp {
 			Members m = new Single(ID, userName);
 			membersMap.put(m.getId(), m);
 			int clubCounter = 1;
+			System.out.println("");
 			for (Club c : clubsList) {
 				System.out.printf("%d. %s\n", clubCounter++, c.getName());
 			}
+			System.out.println("");
 			int userChoice = Validator.getInt(scnr, "Select which club you would like to join. (Choose a number) ", 1,
 					clubsList.size());
-			System.out.println("You selected: " + clubsList.get(userChoice - 1));
+			System.out.println("\nYou selected: " + clubsList.get(userChoice - 1));
 			clubsList.get(userChoice - 1).getMembers().add(m);
 			((Single) m).setClub(clubsList.get(userChoice - 1));
 			System.out.println("This is your new Club ID: " + ID + ". Please remember it. ");
-//			System.out.println(m);
-//			System.out.println(clubsList.get(userChoice - 1) + "'s members: " + clubsList.get(userChoice - 1).getMembers());
 		} else if (membershipChoice.startsWith("m")) {
 			String userName = Validator.getString(scnr, "What is your name? ");
 			String ID = generateID(userName);
 			Members m = new Multi(ID, userName, 0);
 			membersMap.put(m.getId(), m);
 			int clubCounter = 1;
-			System.out.println("You have joined the following clubs: ");
+			System.out.println("\nYou have joined the following clubs:\n");
 			for (Club c : clubsList) {
 				System.out.printf("%d. %s\n", clubCounter++, c.getName());
 			}
+			System.out.println("");
 			for (int i = 0; i < clubsList.size(); i++) {
 				clubsList.get(i).getMembers().add(m);
 			}
 			((Multi) m).setClubs(clubsList);
-			System.out.println("This is your new Club ID: " + ID + ". Please remember it. ");
+			System.out.println("This is your new Club Member ID: " + ID + ". Please remember it. ");
 		}
+		System.out.println("");
 	}
 
 	public static void removeUser(Scanner scnr, String userId, Map<String, Members> membersMap) {

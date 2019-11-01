@@ -31,7 +31,7 @@ public class Single extends Members {
 			throw new Exception();
 		}
 		} catch (Exception e) {
-			System.out.println("Unable to check in.");
+			System.out.println("\nUnable to check in.");
 		}
 		return false;
 	}
