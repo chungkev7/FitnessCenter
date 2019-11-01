@@ -112,22 +112,26 @@ public class MainApp {
 			for (Club c : clubsList) {
 				System.out.printf("%d. %s\n", counter++, c.getName());
 			}
-			int userChoice = Validator.getInt(scnr, "Select club would you like to join? (Choose a number)", 1, 4);
+			int userChoice = Validator.getInt(scnr, "Select which club you would like to join. (Choose a number) ", 1, 4);
 			System.out.println("You selected: " + clubsList.get(userChoice - 1));
 			clubsList.get(userChoice - 1).getMembers().add(m);
+			((Single) m).setClub(clubsList.get(userChoice - 1));
+//			System.out.println(m);
+//			System.out.println(clubsList.get(userChoice - 1) + "'s members: " + clubsList.get(userChoice - 1).getMembers());
 		} else if (membershipChoice.startsWith("m")) {
 			String userName = Validator.getString(scnr, "What is your name? ");
 			Members m = new Multi("13", userName, 0);
 			membersMap.put(m.getId(), m);
 			int counter = 1;
-			System.out.println("You can join the following clubs: ");
+			System.out.println("You have joined the following clubs: ");
 			for (Club c : clubsList) {
 				System.out.printf("%d. %s\n", counter++, c.getName());
 			}
 			for (int i = 0; i < clubsList.size(); i++) {
 				clubsList.get(i).getMembers().add(m);
-
 			}
+			((Multi) m).setClubs(clubsList);
+//			System.out.println(m);
 
 		}
 

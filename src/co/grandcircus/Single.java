@@ -4,6 +4,8 @@ public class Single extends Members {
 
 	private Club club;
 	
+	
+	//Constructors
 	public Single() {
 	}
 
@@ -12,6 +14,7 @@ public class Single extends Members {
 		super.setMonthlyFee(15.05);
 	}
 
+	//Getters and Setters
 	public Club getClub() {
 		return club;
 	}
@@ -22,9 +25,24 @@ public class Single extends Members {
 
 	@Override
 	public boolean checkIn(Club club) {
-		super.checkedIn = true;
-		return true;
+		if (getClub().equals(club)) {
+			super.setCheckedIn(true);
+		} else {
+			System.out.println("Unable to check in.");
+		}
+		return false;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "," + club;
+	}
+	
+	
+
+	
+	
+	
 
 
 

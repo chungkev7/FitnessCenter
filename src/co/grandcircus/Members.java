@@ -3,8 +3,8 @@ package co.grandcircus;
 public abstract class Members {
 	private String id;
 	private String name;
-	boolean checkedIn;
-	double monthlyFee;
+	private boolean checkedIn;
+	private double monthlyFee;
 	
 	public Members() {
 		super();

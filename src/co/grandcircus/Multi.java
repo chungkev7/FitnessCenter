@@ -1,6 +1,7 @@
 package co.grandcircus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Multi extends Members {
@@ -9,6 +10,7 @@ public class Multi extends Members {
 	
 	private List<Club> clubs;
 	
+	//Constructors
 	public Multi() {
 	}
 
@@ -18,12 +20,36 @@ public class Multi extends Members {
 		this.points = points;
 		List<Club> clubs = new ArrayList<>();
 	}
-
+	
+	//Getters and setters
+	public int getPoints() {
+		return points;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
+	public List<Club> getClubs() {
+		return clubs;
+	}
+	
+	public void setClubs(List<Club> clubs) {
+		this.clubs = clubs;
+	}
+	
 	@Override
 	public boolean checkIn(Club club) {
-		super.checkedIn = true;
+		super.setCheckedIn(true);
 		points++;
 		return true;
 	}
+
+	//Overrided toString()
+	@Override
+	public String toString() {
+		return super.toString() + "," + points + "," + clubs;
+	}
+	
 
 }
