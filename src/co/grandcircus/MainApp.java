@@ -4,6 +4,8 @@
 package co.grandcircus;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -23,6 +25,12 @@ public class MainApp {
 		clubsList.add(new Club("The Jacked Ones", "532 Mount Branch"));
 		clubsList.add(new Club("Lunk-free Zone", "333 Fourth St"));
 
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.YEAR, 2019);
+		calendar.set(Calendar.MONTH, 10);
+		
+		System.out.println(calendar.getTime());
+		
 		System.out.println("Welcome to a new and fitter version of you!\n");
 		int action = 0;
 		String userId = "";
@@ -189,7 +197,14 @@ public class MainApp {
 			case 6:
 				String name = Validator.getString(scnr, "Enter the club name: ");
 				String address = Validator.getString(scnr, "Enter club address: ");
-				clubsList.add(new Club(name, address));
+				Club c = new Club(name, address);
+				clubsList.add(c);
+				for (Members m : membersMap.values()) {
+					if (m instanceof Multi) {
+						c.getMembers().add(m);
+					}
+				}
+				System.out.println();
 				break;
 			case 7:
 				checkOutAll(membersMap);
@@ -199,11 +214,20 @@ public class MainApp {
 		} while (action != 7);
 
 		System.out.println("Goodbye!");
+		
+		updateTime(calendar);
+
 	}
 
 	public static String generateID(String name) {
 		Random rndm = new Random();
-		return name.substring(0, 1).toUpperCase() + (rndm.nextInt(900) + 100);
+		String newID = "";
+		try {
+		newID = name.substring(0, 1).toUpperCase() + (rndm.nextInt(900) + 100);
+	} catch (StringIndexOutOfBoundsException e) {
+		System.out.println("Invalid input\n");
+	}
+		return newID;
 	}
 
 	public static void addNewMember(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr) {
@@ -211,8 +235,12 @@ public class MainApp {
 		String membershipChoice = Validator
 				.getString(scnr, "Are you interested in our single or multi-club membership? ").toLowerCase();
 		if (membershipChoice.startsWith("s")) {
-			String userName = Validator.getString(scnr, "What is your name? ");
-			String ID = generateID(userName);
+			String userName = "";
+			String ID = "";
+			do {
+			userName = Validator.getString(scnr, "What is your name? ");
+			ID = generateID(userName);
+			} while (userName.isEmpty());
 			Members m = new Single(ID, userName);
 			membersMap.put(m.getId(), m);
 			int clubCounter = 1;
@@ -271,4 +299,9 @@ public class MainApp {
 			m.setCheckedIn(false);
 		}
 	}
+	
+	public static void updateTime(Calendar calendar) {
+		calendar.add(Calendar.MONTH, 1);
+	}
+	
 }
