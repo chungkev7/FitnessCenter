@@ -18,6 +18,11 @@ public class MainApp {
 
 		Scanner scnr = new Scanner(System.in);
 
+		FileIOHelper.createDir();
+		FileIOHelper.createOurFiles("Members.txt");
+		FileIOHelper.createOurFiles("Clubs.txt");
+		FileIOHelper.createOurFiles("Time.txt");
+
 		List<Club> clubsList = new ArrayList<>();
 		Map<String, Members> membersMap = new TreeMap<>();
 		clubsList.add(new Club("Planet Fitness", "1234 Woodward Ave"));
@@ -28,9 +33,13 @@ public class MainApp {
 		Calendar calendar = new GregorianCalendar();
 		calendar.set(Calendar.YEAR, 2019);
 		calendar.set(Calendar.MONTH, 10);
-		
+
+		FileIOHelper.readFromFileMap(membersMap);
+		// FileIOHelper.readFromFileList();
+		// FileIOHelper.readFromFileTime();
+
 		System.out.println(calendar.getTime());
-		
+
 		System.out.println("Welcome to a new and fitter version of you!\n");
 		int action = 0;
 		String userId = "";
@@ -93,7 +102,7 @@ public class MainApp {
 					System.out.println("\nYour bill this month is: $" + bill);
 					if (points == 1) {
 						System.out.println("You have " + points + " point\n");
-					} else 
+					} else
 						System.out.println("You have " + points + " points\n");
 				}
 				break;
@@ -107,19 +116,21 @@ public class MainApp {
 					if (membersMap.containsKey(userId)) {
 						if (membersMap.get(userId) instanceof Single) {
 							String[] memberInfo = membersMap.get(userId).toString().split(",");
-							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
-									, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3], "Club info:", memberInfo[4] + " " + memberInfo[5]);
+							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0],
+									"Member Name:", memberInfo[1], "Checked In Status:", memberInfo[2], "Monthly Fee:",
+									memberInfo[3], "Club info:", memberInfo[4] + " " + memberInfo[5]);
 						} else if (membersMap.get(userId) instanceof Multi) {
 							String[] memberInfo = membersMap.get(userId).toString().split(",");
 							List<String> clubNames = new ArrayList<>();
-							for (Club c : ((Multi)membersMap.get(userId)).getClubs()) {
+							for (Club c : ((Multi) membersMap.get(userId)).getClubs()) {
 								clubNames.add(c.getName());
 							}
-							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
-									, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3]);
+							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n", "Member ID:", memberInfo[0],
+									"Member Name:", memberInfo[1], "Checked In Status:", memberInfo[2], "Monthly Fee:",
+									memberInfo[3]);
 							System.out.print("Clubs: ");
 							for (int i = 0; i < clubNames.size(); ++i) {
-								if (i < clubNames.size()-1) {
+								if (i < clubNames.size() - 1) {
 									System.out.print(clubNames.get(i) + ", ");
 								} else {
 									System.out.print(clubNames.get(i));
@@ -146,19 +157,22 @@ public class MainApp {
 						for (Members m : foundMembers) {
 							if (m instanceof Single) {
 								String[] memberInfo = m.toString().split(",");
-								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
-										, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3], "Club info:", memberInfo[4] + " " + memberInfo[5]);
+								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:",
+										memberInfo[0], "Member Name:", memberInfo[1], "Checked In Status:",
+										memberInfo[2], "Monthly Fee:", memberInfo[3], "Club info:",
+										memberInfo[4] + " " + memberInfo[5]);
 							} else if (m instanceof Multi) {
 								String[] memberInfo = m.toString().split(",");
 								List<String> clubNames = new ArrayList<>();
-								for (Club c : ((Multi)m).getClubs()) {
+								for (Club c : ((Multi) m).getClubs()) {
 									clubNames.add(c.getName());
 								}
-								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n", "Member ID:", memberInfo[0], "Member Name:", memberInfo[1]
-										, "Checked In Status:", memberInfo[2], "Monthly Fee:", memberInfo[3]);
+								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n", "Member ID:", memberInfo[0],
+										"Member Name:", memberInfo[1], "Checked In Status:", memberInfo[2],
+										"Monthly Fee:", memberInfo[3]);
 								System.out.print("Clubs: ");
 								for (int i = 0; i < clubNames.size(); ++i) {
-									if (i < clubNames.size()-1) {
+									if (i < clubNames.size() - 1) {
 										System.out.print(clubNames.get(i) + ", ");
 									} else {
 										System.out.print(clubNames.get(i));
@@ -182,7 +196,7 @@ public class MainApp {
 						System.out.println("There are currently no members attending this club");
 					} else {
 						for (Members m : clubsList.get(userClubChoice - 1).getMembers()) {
-							System.out.printf("%s %s, %s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName() );
+							System.out.printf("%s %s, %s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName());
 						}
 					}
 					System.out.println();
@@ -213,33 +227,39 @@ public class MainApp {
 
 		} while (action != 7);
 
-		System.out.println("Goodbye!");
-		
 		updateTime(calendar);
+		FileIOHelper.writeToFileMap(membersMap);
+		FileIOHelper.writeToFileList(clubsList);
+		FileIOHelper.writeToFileTime(calendar);
 
+		System.out.println("Goodbye!");
+		for (String m : membersMap.keySet()) {
+			System.out.println(m);
+		}
 	}
 
 	public static String generateID(String name) {
 		Random rndm = new Random();
 		String newID = "";
 		try {
-		newID = name.substring(0, 1).toUpperCase() + (rndm.nextInt(900) + 100);
-	} catch (StringIndexOutOfBoundsException e) {
-		System.out.println("Invalid input\n");
-	}
+			newID = name.substring(0, 1).toUpperCase() + (rndm.nextInt(900) + 100);
+		} catch (StringIndexOutOfBoundsException e) {
+			System.out.println("Invalid input\n");
+		}
 		return newID;
 	}
 
 	public static void addNewMember(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr) {
-		System.out.println("These are your options: \n\nSingle Membership: $15.05 per month (One Club)\nMulti Membership: $99.99 per month (Full Access)\n");
+		System.out.println(
+				"These are your options: \n\nSingle Membership: $15.05 per month (One Club)\nMulti Membership: $99.99 per month (Full Access)\n");
 		String membershipChoice = Validator
 				.getString(scnr, "Are you interested in our single or multi-club membership? ").toLowerCase();
 		if (membershipChoice.startsWith("s")) {
 			String userName = "";
 			String ID = "";
 			do {
-			userName = Validator.getString(scnr, "What is your name? ");
-			ID = generateID(userName);
+				userName = Validator.getString(scnr, "What is your name? ");
+				ID = generateID(userName);
 			} while (userName.isEmpty());
 			Members m = new Single(ID, userName);
 			membersMap.put(m.getId(), m);
@@ -299,9 +319,9 @@ public class MainApp {
 			m.setCheckedIn(false);
 		}
 	}
-	
+
 	public static void updateTime(Calendar calendar) {
 		calendar.add(Calendar.MONTH, 1);
 	}
-	
+
 }

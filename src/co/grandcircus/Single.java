@@ -3,9 +3,8 @@ package co.grandcircus;
 public class Single extends Members {
 
 	private Club club;
-	
-	
-	//Constructors
+
+	// Constructors
 	public Single() {
 	}
 
@@ -25,11 +24,11 @@ public class Single extends Members {
 	@Override
 	public boolean checkIn(Club club) {
 		try {
-		if (getClub().equals(club)) {
-			super.setCheckedIn(true);
-		} else {
-			throw new Exception();
-		}
+			if (getClub().equals(club)) {
+				super.setCheckedIn(true);
+			} else {
+				throw new Exception();
+			}
 		} catch (Exception e) {
 			System.out.println("\nUnable to check in.");
 		}
@@ -40,13 +39,5 @@ public class Single extends Members {
 	public String toString() {
 		return super.toString() + "," + club;
 	}
-	
-	
-
-	
-	
-	
-
-
 
 }

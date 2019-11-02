@@ -1,0 +1,2 @@
+C518,Creed,false,15.05,Lunk-free Zone,333 Fourth St
+S924,Stanley,false,15.05,The Jacked Ones,532 Mount Branch
