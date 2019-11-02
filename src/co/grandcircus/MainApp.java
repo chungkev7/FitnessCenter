@@ -4,7 +4,6 @@
 package co.grandcircus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -41,7 +40,7 @@ public class MainApp {
 				for (Club c : clubsList) {
 					System.out.printf("%d. %s\n", counter++, c.getName());
 				}
-				System.out.println("1");
+				System.out.println("");
 
 				clubChoice = Validator.getInt(scnr, "Enter the branch number: ", 1, clubsList.size());
 				userId = Validator.getString(scnr, "Please enter your member ID: ");
@@ -49,16 +48,24 @@ public class MainApp {
 				if (membersMap.get(userId) instanceof Single) {
 					membersMap.get(userId).checkIn(clubsList.get(clubChoice - 1));
 					if (((Single) membersMap.get(userId)).getClub().equals(clubsList.get(clubChoice - 1))) {
+						System.out.println();
 						System.out.println("Welcome " + membersMap.get(userId).getName());
+						System.out.println();
 					} else {
-						System.out.println("Sorry, you're not in our system.");
+						System.out.println();
+						System.out.println("\nSorry, you're not in our system.");
+						System.out.println();
 					}
 				} else if (membersMap.get(userId) instanceof Multi) {
 					membersMap.get(userId).checkIn(clubsList.get(clubChoice - 1));
 					if (((Multi) membersMap.get(userId)).getClubs().contains(clubsList.get(clubChoice - 1))) {
+						System.out.println();
 						System.out.println("Welcome " + membersMap.get(userId).getName());
+						System.out.println();
 					} else {
-						System.out.println("Sorry, you're not in our system.");
+						System.out.println();
+						System.out.println("\nSorry, you're not in our system.");
+						System.out.println();
 					}
 				} else {
 					System.out.println("\nPlease see the Welcome Desk.");
@@ -71,17 +78,20 @@ public class MainApp {
 				String billingId = Validator.getString(scnr, "Please enter your Member ID: ");
 				if (membersMap.get(billingId) instanceof Single) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
-					System.out.println("\nYour bill this month is: $" + bill);
+					System.out.println("\nYour bill this month is: $" + bill + "\n");
 				} else if (membersMap.get(billingId) instanceof Multi) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
 					int points = ((Multi) membersMap.get(billingId)).getPoints();
 					System.out.println("\nYour bill this month is: $" + bill);
-					System.out.println("You have " + points + " points\n");
+					if (points == 1) {
+						System.out.println("You have " + points + " point\n");
+					} else 
+						System.out.println("You have " + points + " points\n");
 				}
 				break;
 			case 4:
 				String userPrompt = "Welcome to the Member Database!\n\nWould you like to search by:\n\n"
-						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu\n";
+						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu\n\nPlease enter a number: ";
 				int searchAction = Validator.getInt(scnr, userPrompt, 1, 4);
 				switch (searchAction) {
 				case 1:
@@ -111,7 +121,7 @@ public class MainApp {
 						}
 
 					} else {
-						System.out.println("Not in database.");
+						System.out.println("\nSorry, you are not in our system!\n");
 					}
 					break;
 				case 2:
@@ -123,7 +133,7 @@ public class MainApp {
 						}
 					}
 					if (foundMembers.size() == 0) {
-						System.out.println("Sorry, you are not in our system!");
+						System.out.println("\nSorry, you are not in our system!\n");
 					} else {
 						for (Members m : foundMembers) {
 							if (m instanceof Single) {
@@ -164,7 +174,7 @@ public class MainApp {
 						System.out.println("There are currently no members attending this club");
 					} else {
 						for (Members m : clubsList.get(userClubChoice - 1).getMembers()) {
-							System.out.printf("%s %s\n%s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName() );
+							System.out.printf("%s %s, %s %s\n", "Member ID:", m.getId(), "Member Name:", m.getName() );
 						}
 					}
 					System.out.println();
@@ -243,7 +253,7 @@ public class MainApp {
 
 		if (membersMap.containsKey(userId)) {
 			try {
-				System.out.println("We're sorry to see you go. ");
+				System.out.println("\nWe're sorry to see you go.\n");
 				membersMap.remove(userId);
 
 			} catch (Exception e) {

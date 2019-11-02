@@ -1,7 +1,5 @@
 package co.grandcircus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Multi extends Members {
@@ -18,7 +16,6 @@ public class Multi extends Members {
 		super(id, name);
 		super.setMonthlyFee(99.99);
 		this.points = points;
-		List<Club> clubs = new ArrayList<>();
 	}
 	
 	//Getters and setters
