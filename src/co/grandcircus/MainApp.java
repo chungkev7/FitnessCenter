@@ -36,7 +36,6 @@ public class MainApp {
 		calendar.set(Calendar.MONTH, 10);
 
 		FileIOHelper.readFromFileMap(membersMap, clubsList);
-		System.out.println(membersMap);
 		// FileIOHelper.readFromFileList();
 		// FileIOHelper.readFromFileTime();
 
