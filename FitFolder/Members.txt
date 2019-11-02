@@ -1,2 +1,4 @@
 C518,Creed,false,15.05,Lunk-free Zone,333 Fourth St
-S924,Stanley,false,15.05,The Jacked Ones,532 Mount Branch
+J209,Jim,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St]
+P567,Pam,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St]
+S106,Stanley,false,15.05,Lunk-free Zone,333 Fourth St

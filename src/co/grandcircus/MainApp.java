@@ -6,6 +6,7 @@ package co.grandcircus;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -23,7 +24,7 @@ public class MainApp {
 		FileIOHelper.createOurFiles("Clubs.txt");
 		FileIOHelper.createOurFiles("Time.txt");
 
-		List<Club> clubsList = new ArrayList<>();
+		List<Club> clubsList = new LinkedList<>();
 		Map<String, Members> membersMap = new TreeMap<>();
 		clubsList.add(new Club("Planet Fitness", "1234 Woodward Ave"));
 		clubsList.add(new Club("Golds Gym", "5678 Main St"));
@@ -34,7 +35,8 @@ public class MainApp {
 		calendar.set(Calendar.YEAR, 2019);
 		calendar.set(Calendar.MONTH, 10);
 
-		FileIOHelper.readFromFileMap(membersMap);
+		FileIOHelper.readFromFileMap(membersMap, clubsList);
+		System.out.println(membersMap);
 		// FileIOHelper.readFromFileList();
 		// FileIOHelper.readFromFileTime();
 
@@ -233,9 +235,6 @@ public class MainApp {
 		FileIOHelper.writeToFileTime(calendar);
 
 		System.out.println("Goodbye!");
-		for (String m : membersMap.keySet()) {
-			System.out.println(m);
-		}
 	}
 
 	public static String generateID(String name) {

@@ -1,12 +1,12 @@
 package co.grandcircus;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Club {
 	private String name;
 	private String address;
-	List<Members> members = new ArrayList<>();
+	List<Members> members = new LinkedList<>();
 
 	public Club() {
 		super();

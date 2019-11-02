@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class FileIOHelper {
 
-	public static void readFromFileMap(Map<String, Members> m) {
+	public static void readFromFileMap(Map<String, Members> membersMap, List<Club> clubsList) {
 		String fileName = "Members.txt";
 		Path path = Paths.get("FitFolder", fileName);
 
@@ -28,10 +28,33 @@ public class FileIOHelper {
 			String line = br.readLine();
 			while (line != null) {
 				String[] arr = line.split(",");
-				m.put(arr[0], new Single(arr[0], arr[1]));
+				String first = arr[5].substring(0,1);
+				if (!first.equalsIgnoreCase("[")) {
+					Members s = new Single(arr[0], arr[1]);
+					membersMap.put(arr[0], s);
+					((Single) s).setClub(new Club(arr[4], arr[5]));
+				} else {
+					Members m = new Multi(arr[0], arr[1], Integer.parseInt(arr[4]));
+					membersMap.put(arr[0], m);
+				}
 				line = br.readLine();
 			}
+			for (Members m : membersMap.values()) {
+				if (m instanceof Single) {
+					Club c = ((Single) m).getClub();
+					for (Club club : clubsList) {
+						if (club.getName().equalsIgnoreCase(c.getName())) {
+							club.getMembers().add(m);
+						}
+					}
+				} else if (m instanceof Multi) {
+					for(Club c : clubsList){
+						c.getMembers().add(m);
+					}
+					((Multi) m).setClubs(clubsList);
+				}
 
+			}
 			br.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Something went wrong with the file.");
@@ -93,7 +116,7 @@ public class FileIOHelper {
 		File file = path.toFile();
 		PrintWriter output = null;
 		try {
-			output = new PrintWriter(new FileOutputStream(file, true));
+			output = new PrintWriter(new FileOutputStream(file, false));
 			for (Members member : m.values()) {
 
 				output.println(member);
