@@ -10,7 +10,11 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.YearMonth;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -63,9 +67,9 @@ public class FileIOHelper {
 		}
 	}
 
-	public static void readFromFileList() {
+	public static void readFromFileList(List<Club> clubsList) {
 		String fileName = "Clubs.txt";
-		Path path = Paths.get("resources", fileName);
+		Path path = Paths.get("FitFolder", fileName);
 
 		File file = path.toFile();
 
@@ -74,7 +78,8 @@ public class FileIOHelper {
 
 			String line = br.readLine();
 			while (line != null) {
-				System.out.println(line);
+				String[] clubInfo = line.split(",");
+				clubsList.add(new Club(clubInfo[0], clubInfo[1]));
 				line = br.readLine();
 			}
 
@@ -86,27 +91,30 @@ public class FileIOHelper {
 		}
 	}
 
-	public static void readFromFileTime() {
+	public static Calendar readFromFileTime() {
 		String fileName = "Time.txt";
-		Path path = Paths.get("resources", fileName);
+		Path path = Paths.get("FitFolder", fileName);
 
 		File file = path.toFile();
-
+		GregorianCalendar gc = new GregorianCalendar();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 
 			String line = br.readLine();
 			while (line != null) {
-				System.out.println(line);
+				String input = line;
+				DateTimeFormatter f = DateTimeFormatter.ofPattern( "E MMM d HH:mm:ss z uuuu" );
+				ZonedDateTime zdt = ZonedDateTime.parse( input , f );
+				gc = GregorianCalendar.from( zdt );
 				line = br.readLine();
 			}
-
 			br.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Something went wrong with the file.");
 		} catch (IOException e) {
 			System.out.println("Something went wrong when we tried to read from the file.");
 		}
+		return gc;
 	}
 
 	public static void writeToFileMap(Map<String, Members> m) {
@@ -138,7 +146,7 @@ public class FileIOHelper {
 		File file = path.toFile();
 		PrintWriter output = null;
 		try {
-			output = new PrintWriter(new FileOutputStream(file, false)); // fix me!
+			output = new PrintWriter(new FileOutputStream(file, false)); // fix me maybe???
 			for (Club clubs : c) {
 				output.println(clubs);
 			}
@@ -159,7 +167,7 @@ public class FileIOHelper {
 		PrintWriter output = null;
 		try {
 			output = new PrintWriter(new FileOutputStream(file, false));
-			output.println(c);
+			output.println(c.getTime());
 			output.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("Hey, contact customer service!");

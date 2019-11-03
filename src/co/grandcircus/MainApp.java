@@ -5,7 +5,6 @@ package co.grandcircus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -26,21 +25,14 @@ public class MainApp {
 
 		List<Club> clubsList = new LinkedList<>();
 		Map<String, Members> membersMap = new TreeMap<>();
-		clubsList.add(new Club("Planet Fitness", "1234 Woodward Ave"));
-		clubsList.add(new Club("Golds Gym", "5678 Main St"));
-		clubsList.add(new Club("The Jacked Ones", "532 Mount Branch"));
-		clubsList.add(new Club("Lunk-free Zone", "333 Fourth St"));
 
-		Calendar calendar = new GregorianCalendar();
-		calendar.set(Calendar.YEAR, 2019);
-		calendar.set(Calendar.MONTH, 10);
-
+		Calendar calendar = FileIOHelper.readFromFileTime();
+		FileIOHelper.readFromFileList(clubsList);
 		FileIOHelper.readFromFileMap(membersMap, clubsList);
-		// FileIOHelper.readFromFileList();
-		// FileIOHelper.readFromFileTime();
-
+		
 		System.out.println(calendar.getTime());
-
+		System.out.println();
+		
 		System.out.println("Welcome to a new and fitter version of you!\n");
 		int action = 0;
 		String userId = "";
@@ -78,11 +70,33 @@ public class MainApp {
 				String billingId = Validator.getString(scnr, "Please enter your Member ID: ");
 				if (membersMap.get(billingId) instanceof Single) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
-					System.out.println("\nYour bill this month is: $" + bill + "\n");
+					Calendar Dec = Calendar.getInstance();
+					Dec.set(2019, 11, 1, 16, 04, 05);
+					Calendar Jan = Calendar.getInstance();
+					Jan.set(2020, 0, 1, 16, 04, 05);
+					if (calendar.get(Calendar.MONTH) == Dec.get(Calendar.MONTH)) {
+						bill = bill * 0.66;
+						System.out.println("\nMerry Christmas!");
+					} else if (calendar.get(Calendar.MONTH) == Jan.get(Calendar.MONTH)) {
+						bill = bill * 1.33;
+						System.out.println("\nHappy New Year!");
+					}
+					System.out.printf("Your bill this month is: $%.2f\n\n", bill);
 				} else if (membersMap.get(billingId) instanceof Multi) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
 					int points = ((Multi) membersMap.get(billingId)).getPoints();
-					System.out.println("\nYour bill this month is: $" + bill);
+					Calendar Dec = Calendar.getInstance();
+					Dec.set(2019, 11, 1, 16, 04, 05);
+					Calendar Jan = Calendar.getInstance();
+					Jan.set(2020, 0, 1, 16, 04, 05);
+					if (calendar.get(Calendar.MONTH) == Dec.get(Calendar.MONTH)) {
+						bill = bill * 0.66;
+						System.out.println("\nMerry Christmas!");
+					} else if (calendar.get(Calendar.MONTH) == Jan.get(Calendar.MONTH)) {
+						bill = bill * 1.33;
+						System.out.println("\nHappy New Year!");
+					}
+					System.out.printf("Your bill this month is: $%.2f\n", bill);
 					if (points == 1) {
 						System.out.println("You have " + points + " point\n");
 					} else
@@ -211,6 +225,7 @@ public class MainApp {
 		} while (action != 7);
 
 		updateTime(calendar);
+		
 		FileIOHelper.writeToFileMap(membersMap);
 		FileIOHelper.writeToFileList(clubsList);
 		FileIOHelper.writeToFileTime(calendar);
