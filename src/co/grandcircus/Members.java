@@ -17,7 +17,7 @@ public abstract class Members {
 		this.checkedIn = false;
 	}
 
-	public abstract boolean checkIn(Club club);
+	public abstract void checkIn(Club club);
 	
 	public String getId() {
 		return id;

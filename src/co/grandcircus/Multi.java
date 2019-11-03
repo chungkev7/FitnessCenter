@@ -36,10 +36,18 @@ public class Multi extends Members {
 	}
 	
 	@Override
-	public boolean checkIn(Club club) {
-		super.setCheckedIn(true);
-		points++;
-		return true;
+	public void checkIn(Club club) {
+		if (super.isCheckedIn()) {
+			System.out.println();
+			System.out.println("You have already checked in.");
+			System.out.println();
+		} else {
+			super.setCheckedIn(true);
+			points++;
+			System.out.println();
+			System.out.println("Welcome " + super.getName());
+			System.out.println();
+		}
 	}
 
 	//Overrided toString()

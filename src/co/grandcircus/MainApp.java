@@ -65,26 +65,8 @@ public class MainApp {
 
 				if (membersMap.get(userId) instanceof Single) {
 					membersMap.get(userId).checkIn(clubsList.get(clubChoice - 1));
-					if (((Single) membersMap.get(userId)).getClub().equals(clubsList.get(clubChoice - 1))) {
-						System.out.println();
-						System.out.println("Welcome " + membersMap.get(userId).getName());
-						System.out.println();
-					} else {
-						System.out.println();
-						System.out.println("\nSorry, you're not in our system.");
-						System.out.println();
-					}
 				} else if (membersMap.get(userId) instanceof Multi) {
 					membersMap.get(userId).checkIn(clubsList.get(clubChoice - 1));
-					if (((Multi) membersMap.get(userId)).getClubs().contains(clubsList.get(clubChoice - 1))) {
-						System.out.println();
-						System.out.println("Welcome " + membersMap.get(userId).getName());
-						System.out.println();
-					} else {
-						System.out.println();
-						System.out.println("\nSorry, you're not in our system.");
-						System.out.println();
-					}
 				} else {
 					System.out.println("\nPlease see the Welcome Desk.");
 				}

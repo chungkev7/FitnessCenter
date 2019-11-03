@@ -22,17 +22,28 @@ public class Single extends Members {
 	}
 
 	@Override
-	public boolean checkIn(Club club) {
+	public void checkIn(Club club) {
 		try {
-			if (getClub().equals(club)) {
-				super.setCheckedIn(true);
+			if (super.isCheckedIn()) {
+				System.out.println();
+				System.out.println("You have already checked in.");
+				System.out.println();
 			} else {
-				throw new Exception();
+				if (club.getMembers().contains(Single.this)) {
+					super.setCheckedIn(true);
+						System.out.println();
+						System.out.println("Welcome " + super.getName());
+						System.out.println();
+				} else if (!club.getMembers().contains(Single.this)) {
+					System.out.println();
+					System.out.println("Sorry, you're not in our system.");
+					throw new IndexOutOfBoundsException();
+				} 
 			}
-		} catch (Exception e) {
-			System.out.println("\nUnable to check in.");
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Unable to check in.");
+			System.out.println();
 		}
-		return false;
 	}
 
 	@Override
