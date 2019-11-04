@@ -29,18 +29,18 @@ public class MainApp {
 		Calendar calendar = FileIOHelper.readFromFileTime();
 		FileIOHelper.readFromFileList(clubsList);
 		FileIOHelper.readFromFileMap(membersMap, clubsList);
-		
+
 		System.out.println(calendar.getTime());
 		System.out.println();
-		
-		System.out.println("Welcome to a new and fitter version of you!\n");
+
+		System.out.println("Welcome to a newer and fitter version of you!\n");
 		int action = 0;
 		String userId = "";
 		int clubChoice = 0;
 
 		do {
 			String prompt = "Please choose from the following options:\n\n1. Check in\n2. Sign up for membership"
-					+ "\n3. Get bill\n4. Search Member Database\n5. Cancel membership\n6. Add Club\n7. Quit \n";
+					+ "\n3. Get bill/check points (multi-membership)\n4. Search member database\n5. Cancel membership\n6. Add club\n7. Quit \n";
 			action = Validator.getInt(scnr, prompt, 1, 7);
 
 			switch (action) {
@@ -60,14 +60,14 @@ public class MainApp {
 				} else if (membersMap.get(userId) instanceof Multi) {
 					membersMap.get(userId).checkIn(clubsList.get(clubChoice - 1));
 				} else {
-					System.out.println("\nPlease see the Welcome Desk.");
+					System.out.println("\nPlease see the welcome desk.");
 				}
 				break;
 			case 2:
 				addNewMember(clubsList, membersMap, scnr);
 				break;
 			case 3:
-				String billingId = Validator.getString(scnr, "Please enter your Member ID: ");
+				String billingId = Validator.getString(scnr, "Please enter your member ID: ");
 				if (membersMap.get(billingId) instanceof Single) {
 					double bill = membersMap.get(billingId).getMonthlyFee();
 					Calendar Dec = Calendar.getInstance();
@@ -104,7 +104,7 @@ public class MainApp {
 				}
 				break;
 			case 4:
-				String userPrompt = "Welcome to the Member Database!\n\nWould you like to search by:\n\n"
+				String userPrompt = "Welcome to the member database!\n\nWould you like to search by:\n\n"
 						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu\n\nPlease enter a number: ";
 				int searchAction = Validator.getInt(scnr, userPrompt, 1, 4);
 				switch (searchAction) {
@@ -115,7 +115,7 @@ public class MainApp {
 							String[] memberInfo = membersMap.get(userId).toString().split(",");
 							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0],
 									"Member Name:", memberInfo[1], "Checked In Status:", memberInfo[2], "Monthly Fee:",
-									memberInfo[3], "Club info:", memberInfo[4] + " " + memberInfo[5]);
+									memberInfo[3], "Club Info:", memberInfo[4] + " " + memberInfo[5]);
 						} else if (membersMap.get(userId) instanceof Multi) {
 							String[] memberInfo = membersMap.get(userId).toString().split(",");
 							List<String> clubNames = new ArrayList<>();
@@ -156,7 +156,7 @@ public class MainApp {
 								String[] memberInfo = m.toString().split(",");
 								System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:",
 										memberInfo[0], "Member Name:", memberInfo[1], "Checked In Status:",
-										memberInfo[2], "Monthly Fee:", memberInfo[3], "Club info:",
+										memberInfo[2], "Monthly Fee:", memberInfo[3], "Club Info:",
 										memberInfo[4] + " " + memberInfo[5]);
 							} else if (m instanceof Multi) {
 								String[] memberInfo = m.toString().split(",");
@@ -203,10 +203,10 @@ public class MainApp {
 				}
 				break;
 			case 5:
-				removeUser(scnr, userId, membersMap);
+				removeUser(scnr, userId, membersMap, clubsList);
 				break;
 			case 6:
-				String name = Validator.getString(scnr, "Enter the club name: ");
+				String name = Validator.getString(scnr, "Enter club name: ");
 				String address = Validator.getString(scnr, "Enter club address: ");
 				Club c = new Club(name, address);
 				clubsList.add(c);
@@ -225,7 +225,7 @@ public class MainApp {
 		} while (action != 7);
 
 		updateTime(calendar);
-		
+
 		FileIOHelper.writeToFileMap(membersMap);
 		FileIOHelper.writeToFileList(clubsList);
 		FileIOHelper.writeToFileTime(calendar);
@@ -246,9 +246,9 @@ public class MainApp {
 
 	public static void addNewMember(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr) {
 		System.out.println(
-				"These are your options: \n\nSingle Membership: $15.05 per month (One Club)\nMulti Membership: $99.99 per month (Full Access)\n");
+				"These are your options: \n\nSingle Membership: $15.05 per month (One Club)\nMulti-club Membership: $99.99 per month (Full Access)\n");
 		String membershipChoice = Validator
-				.getString(scnr, "Are you interested in our single or multi-club membership? ").toLowerCase();
+				.getString(scnr, "Are you interested in our Single or Multi-Club Membership? ").toLowerCase();
 		if (membershipChoice.startsWith("s")) {
 			String userName = "";
 			String ID = "";
@@ -285,27 +285,29 @@ public class MainApp {
 				clubsList.get(i).getMembers().add(m);
 			}
 			((Multi) m).setClubs(clubsList);
-			System.out.println("This is your new Club Member ID: " + ID + ". Please remember it. ");
+			System.out.println("This is your new member ID: " + ID + ". Please remember it. ");
 		}
 		System.out.println("");
 	}
 
-	public static void removeUser(Scanner scnr, String userId, Map<String, Members> membersMap) {
+	public static void removeUser(Scanner scnr, String userId, Map<String, Members> membersMap, List<Club> clubsList) {
 
 		userId = Validator.getString(scnr, "Please enter your member ID: ");
 
 		if (membersMap.containsKey(userId)) {
 			try {
 				System.out.println("\nWe're sorry to see you go.\n");
+				for (int i = 0; i < clubsList.size(); i++) {
+					if (clubsList.get(i).getMembers().contains(membersMap.get(userId))) {
+						clubsList.get(i).getMembers().remove(membersMap.get(userId));
+					}
+				}
 				membersMap.remove(userId);
-
 			} catch (Exception e) {
 				System.out.println("Something went terribly wrong. Our bad.");
-
 			}
 		} else {
-			System.out.println("You are not currently in our system. Please see the Welcome Desk.");
-
+			System.out.println("You are not currently in our system. Please see the welcome desk.");
 		}
 	}
 
@@ -318,5 +320,4 @@ public class MainApp {
 	public static void updateTime(Calendar calendar) {
 		calendar.add(Calendar.MONTH, 1);
 	}
-
 }

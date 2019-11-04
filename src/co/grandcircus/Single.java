@@ -31,14 +31,14 @@ public class Single extends Members {
 			} else {
 				if (club.getMembers().contains(Single.this)) {
 					super.setCheckedIn(true);
-						System.out.println();
-						System.out.println("Welcome " + super.getName());
-						System.out.println();
+					System.out.println();
+					System.out.println("Welcome " + super.getName());
+					System.out.println();
 				} else if (!club.getMembers().contains(Single.this)) {
 					System.out.println();
 					System.out.println("Sorry, you're not in our system.");
 					throw new IndexOutOfBoundsException();
-				} 
+				}
 			}
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Unable to check in.");
@@ -50,5 +50,4 @@ public class Single extends Members {
 	public String toString() {
 		return super.toString() + "," + club;
 	}
-
 }

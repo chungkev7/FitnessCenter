@@ -33,7 +33,7 @@ public class Club {
 	public List<Members> getMembers() {
 		return members;
 	}
-	
+
 	public void setMembers(List<Members> members) {
 		this.members = members;
 	}
@@ -41,7 +41,6 @@ public class Club {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
 
 	@Override
 	public String toString() {

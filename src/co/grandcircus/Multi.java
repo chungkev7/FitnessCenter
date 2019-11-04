@@ -5,10 +5,10 @@ import java.util.List;
 public class Multi extends Members {
 
 	private int points;
-	
+
 	private List<Club> clubs;
-	
-	//Constructors
+
+	// Constructors
 	public Multi() {
 	}
 
@@ -17,24 +17,24 @@ public class Multi extends Members {
 		super.setMonthlyFee(99.99);
 		this.points = points;
 	}
-	
-	//Getters and setters
+
+	// Getters and setters
 	public int getPoints() {
 		return points;
 	}
-	
+
 	public void setPoints(int points) {
 		this.points = points;
 	}
-	
+
 	public List<Club> getClubs() {
 		return clubs;
 	}
-	
+
 	public void setClubs(List<Club> clubs) {
 		this.clubs = clubs;
 	}
-	
+
 	@Override
 	public void checkIn(Club club) {
 		if (super.isCheckedIn()) {
@@ -50,11 +50,9 @@ public class Multi extends Members {
 		}
 	}
 
-	//Overrided toString()
+	// Overrided toString()
 	@Override
 	public String toString() {
 		return super.toString() + "," + points + "," + clubs;
 	}
-	
-
 }

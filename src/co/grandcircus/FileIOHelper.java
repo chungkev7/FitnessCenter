@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.YearMonth;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -23,16 +22,15 @@ public class FileIOHelper {
 	public static void readFromFileMap(Map<String, Members> membersMap, List<Club> clubsList) {
 		String fileName = "Members.txt";
 		Path path = Paths.get("FitFolder", fileName);
-
 		File file = path.toFile();
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
-
 			String line = br.readLine();
+
 			while (line != null) {
 				String[] arr = line.split(",");
-				String first = arr[5].substring(0,1);
+				String first = arr[5].substring(0, 1);
 				if (!first.equalsIgnoreCase("[")) {
 					Members s = new Single(arr[0], arr[1]);
 					membersMap.put(arr[0], s);
@@ -52,7 +50,7 @@ public class FileIOHelper {
 						}
 					}
 				} else if (m instanceof Multi) {
-					for(Club c : clubsList){
+					for (Club c : clubsList) {
 						c.getMembers().add(m);
 					}
 					((Multi) m).setClubs(clubsList);
@@ -70,7 +68,6 @@ public class FileIOHelper {
 	public static void readFromFileList(List<Club> clubsList) {
 		String fileName = "Clubs.txt";
 		Path path = Paths.get("FitFolder", fileName);
-
 		File file = path.toFile();
 
 		try {
@@ -103,9 +100,9 @@ public class FileIOHelper {
 			String line = br.readLine();
 			while (line != null) {
 				String input = line;
-				DateTimeFormatter f = DateTimeFormatter.ofPattern( "E MMM d HH:mm:ss z uuuu" );
-				ZonedDateTime zdt = ZonedDateTime.parse( input , f );
-				gc = GregorianCalendar.from( zdt );
+				DateTimeFormatter f = DateTimeFormatter.ofPattern("E MMM d HH:mm:ss z uuuu");
+				ZonedDateTime zdt = ZonedDateTime.parse(input, f);
+				gc = GregorianCalendar.from(zdt);
 				line = br.readLine();
 			}
 			br.close();
@@ -126,9 +123,7 @@ public class FileIOHelper {
 		try {
 			output = new PrintWriter(new FileOutputStream(file, false));
 			for (Members member : m.values()) {
-
 				output.println(member);
-
 			}
 			output.close();
 		} catch (FileNotFoundException e) {
@@ -174,7 +169,6 @@ public class FileIOHelper {
 		} finally {
 			output.close();
 		}
-
 	}
 
 	public static void createOurFiles(String fileName) {
@@ -183,32 +177,23 @@ public class FileIOHelper {
 		if (Files.notExists(path)) {
 			try {
 				Files.createFile(path);
-//				System.out.println("The file was created successfully.");
 			} catch (IOException e) {
 				System.out.println("Something went terribly wrong!");
 			}
-		} // else {
-//			System.out.println("The file already exists!");
-//		}
+		}
 	}
 
 	public static void createDir() {
 		String dirPath = "FitFolder";
-
 		Path folder = Paths.get(dirPath);
 
 		if (Files.notExists(folder)) {
 			try {
-
 				Files.createDirectories(folder);
-//				System.out.println("The file was created successfully!");
 			} catch (IOException e) {
 				System.out.println("Something went wrong with the folder creation.");
 			}
-
-		} // else {
-//			System.out.println("The folder already exists!");
-//		}
+		}
 	}
 
 }
