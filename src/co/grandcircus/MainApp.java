@@ -46,8 +46,9 @@ public class MainApp {
 		// Main Menu -- this will continue to loop until the user chooses to quit
 		do {
 			String prompt = "Please choose from the following options:\n\n1. Check in\n2. Sign up for membership"
-					+ "\n3. Get bill/check points (multi-club membership)\n4. Search member database\n5. Cancel membership\n6. Add club\n7. Quit \n";
-			action = Validator.getInt(scnr, prompt, 1, 7);
+					+ "\n3. Get bill/check points (multi-club membership)\n4. Search member database\n5. Cancel membership\n6. Add club\n7. "
+					+ "Upgrade/Downgrade membership\n8. Quit\n";
+			action = Validator.getInt(scnr, prompt, 1, 8);
 
 			switch (action) {
 			case 1: // checks in user
@@ -116,7 +117,7 @@ public class MainApp {
 				}
 				break;
 			case 4: // searches member database
-				String userPrompt = "Welcome to the member database!\n\nWould you like to search by:\n\n"
+				String userPrompt = "\nWelcome to the member database!\n\nWould you like to search by:\n\n"
 						+ "1. ID\n2. Name\n3. Club\n4. Return to main menu\n\nPlease enter a number: ";
 				int searchAction = Validator.getInt(scnr, userPrompt, 1, 4);
 				switch (searchAction) {
@@ -215,7 +216,9 @@ public class MainApp {
 				}
 				break;
 			case 5: // cancels subscription and removes user from membersMap and clubsList
+				userId = Validator.getStringMatchingRegex(scnr, "To confirm your cancellation, please enter your member ID: ", "[A-Z][\\d]{3}");
 				removeUser(scnr, userId, membersMap, clubsList);
+				System.out.println("\nWe're sorry to see you go.\n");
 				break;
 			case 6: // adds new club and adds multi-members to the new club's ArrayList
 				String name = Validator.getString(scnr, "Enter club name: ");
@@ -229,12 +232,16 @@ public class MainApp {
 				}
 				System.out.println();
 				break;
-			case 7: // quits the program and resets everyone's checked-in status to false
+			case 7: 
+				userId = Validator.getStringMatchingRegex(scnr, "\nTo change your membership status, please confirm your member ID: ", "[A-Z][\\d]{3}");
+				String name2 = membersMap.get(userId).getName();
+				changeMembership(scnr, userId, membersMap, clubsList, name2);
+			case 8: // quits the program and resets everyone's checked-in status to false
 				checkOutAll(membersMap);
 				break;
 			}
 
-		} while (action != 7);
+		} while (action != 8);
 		// increments the calendar month by one
 		updateTime(calendar);
 		// writes everything to the text files, updates new information
@@ -309,12 +316,8 @@ public class MainApp {
 	// allows user to cancel subscription, and removes them from membersMap and
 	// club's member ArrayList
 	public static void removeUser(Scanner scnr, String userId, Map<String, Members> membersMap, List<Club> clubsList) {
-
-		userId = Validator.getStringMatchingRegex(scnr, "Please enter your member ID: ", "[A-Z][\\d]{3}");
-
 		if (membersMap.containsKey(userId)) {
 			try {
-				System.out.println("\nWe're sorry to see you go.\n");
 				for (int i = 0; i < clubsList.size(); i++) {
 					if (clubsList.get(i).getMembers().contains(membersMap.get(userId))) {
 						clubsList.get(i).getMembers().remove(membersMap.get(userId));
@@ -328,6 +331,47 @@ public class MainApp {
 			System.out.println("You are not currently in our system. Please see the welcome desk.");
 		}
 	}
+	/*
+	 * Overloaded method for addNewMember
+	 */
+	public static void switchMembershipStatus(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr, String userId, String name) {
+		System.out.println(
+				"These are your options: \n\nSingle membership: $15.05 per month (one club)\nMulti-club membership: $99.99 per month (full access)\n");
+		String membershipChoice = Validator.getStringMatchingRegex(scnr,
+				"Are you interested in our single or multi-club membership? (choose S / M) ",
+				"([SMsm]{1})|(([SMsm]{1})([ulti]{4}|[ingle]{5}))").toLowerCase();
+		if (membershipChoice.startsWith("s")) {
+			Members m = new Single(userId, name);
+			membersMap.put(m.getId(), m);
+			int clubCounter = 1;
+			System.out.println("");
+			for (Club c : clubsList) {
+				System.out.printf("%d. %s\n", clubCounter++, c.getName());
+			}
+			System.out.println("");
+			int userChoice = Validator.getInt(scnr, "Select which club you would like to join. (Choose a number) ", 1,
+					clubsList.size());
+			System.out.println("\nYou selected: " + clubsList.get(userChoice - 1));
+			clubsList.get(userChoice - 1).getMembers().add(m);
+			((Single) m).setClub(clubsList.get(userChoice - 1));
+			System.out.println("You have successfully made changes to your membership. Please use the same ID.");
+		} else if (membershipChoice.startsWith("m")) {
+			Members m = new Multi(userId, name, 0);
+			membersMap.put(m.getId(), m);
+			int clubCounter = 1;
+			System.out.println("\nYou have joined the following clubs:\n");
+			for (Club c : clubsList) {
+				System.out.printf("%d. %s\n", clubCounter++, c.getName());
+			}
+			System.out.println("");
+			for (int i = 0; i < clubsList.size(); i++) {
+				clubsList.get(i).getMembers().add(m);
+			}
+			((Multi) m).setClubs(clubsList);
+			System.out.println("You have successfully made changes to your membership. Please use the same ID.");
+		}
+		System.out.println("");
+	}
 
 	// checks out everyone at the end of the day
 	public static void checkOutAll(Map<String, Members> membersMap) {
@@ -339,5 +383,10 @@ public class MainApp {
 	// increments the calendar month by one
 	public static void updateTime(Calendar calendar) {
 		calendar.add(Calendar.MONTH, 1);
+	}
+	// combines the removeUser() and addMember() methods to change to the desired membership
+	public static void changeMembership(Scanner scnr, String userId, Map<String, Members> membersMap, List<Club> clubsList, String name) {
+		removeUser(scnr, userId, membersMap, clubsList);
+		switchMembershipStatus(clubsList, membersMap, scnr, userId, name);
 	}
 }
