@@ -35,11 +35,14 @@ public class Multi extends Members {
 		this.clubs = clubs;
 	}
 
+	/*
+	 * This method checks if the member is already checked in
+	 */
 	@Override
 	public void checkIn(Club club) {
 		if (super.isCheckedIn()) {
 			System.out.println();
-			System.out.println("You have already checked in.");
+			System.out.println("You have already checked in, " + super.getName());
 			System.out.println();
 		} else {
 			super.setCheckedIn(true);

@@ -8,6 +8,7 @@ public class Club {
 	private String address;
 	List<Members> members = new LinkedList<>();
 
+	// constructors
 	public Club() {
 		super();
 	}
@@ -18,6 +19,7 @@ public class Club {
 		this.address = address;
 	}
 
+	// getters and setters
 	public String getName() {
 		return name;
 	}

@@ -5,7 +5,8 @@ public abstract class Members {
 	private String name;
 	private boolean checkedIn;
 	private double monthlyFee;
-	
+
+	// constructors
 	public Members() {
 		super();
 	}
@@ -17,8 +18,9 @@ public abstract class Members {
 		this.checkedIn = false;
 	}
 
+	// setters and getters
 	public abstract void checkIn(Club club);
-	
+
 	public String getId() {
 		return id;
 	}

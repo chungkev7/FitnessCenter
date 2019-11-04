@@ -21,12 +21,16 @@ public class Single extends Members {
 		this.club = club;
 	}
 
+	/*
+	 * This method checks if member is in the Members ArrayList for a specified club
+	 * Also it checks if the member is checked in or not
+	 */
 	@Override
 	public void checkIn(Club club) {
 		try {
 			if (super.isCheckedIn()) {
 				System.out.println();
-				System.out.println("You have already checked in.");
+				System.out.println("You have already checked in, " + super.getName());
 				System.out.println();
 			} else {
 				if (club.getMembers().contains(Single.this)) {
@@ -36,7 +40,7 @@ public class Single extends Members {
 					System.out.println();
 				} else if (!club.getMembers().contains(Single.this)) {
 					System.out.println();
-					System.out.println("Sorry, you're not in our system.");
+					System.out.println("Sorry, " + super.getName() + ", you're not in our system.");
 					throw new IndexOutOfBoundsException();
 				}
 			}

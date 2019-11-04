@@ -19,6 +19,14 @@ import java.util.Map;
 
 public class FileIOHelper {
 
+	/*
+	 * This method reads from Members.txt and depending on whether they are single
+	 * or multi members, a new single or multi member will be created, put into the
+	 * membersMap, and add the members to the clubs members ArrayList
+	 * 
+	 * If these actions couldn't be completed, this method would catch that
+	 * exception and print out a warning statement
+	 */
 	public static void readFromFileMap(Map<String, Members> membersMap, List<Club> clubsList) {
 		String fileName = "Members.txt";
 		Path path = Paths.get("FitFolder", fileName);
@@ -55,7 +63,6 @@ public class FileIOHelper {
 					}
 					((Multi) m).setClubs(clubsList);
 				}
-
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -65,6 +72,10 @@ public class FileIOHelper {
 		}
 	}
 
+	/*
+	 * This method reads from Clubs.txt and adds them to the clubsList. If a problem
+	 * occurs, it prints out a warning.
+	 */
 	public static void readFromFileList(List<Club> clubsList) {
 		String fileName = "Clubs.txt";
 		Path path = Paths.get("FitFolder", fileName);
@@ -88,6 +99,11 @@ public class FileIOHelper {
 		}
 	}
 
+	/*
+	 * This method reads from the Time.txt file. It converts a string to a Calendar
+	 * object. Then it returns that Calendar object. If a problem occurs, it prints
+	 * out a warning.
+	 */
 	public static Calendar readFromFileTime() {
 		String fileName = "Time.txt";
 		Path path = Paths.get("FitFolder", fileName);
@@ -114,6 +130,11 @@ public class FileIOHelper {
 		return gc;
 	}
 
+	/*
+	 * This method writes to the Members.txt file. It iterates through the
+	 * membersMap and prints out each member on a separate line. It prints out a
+	 * warning if an error occurs.
+	 */
 	public static void writeToFileMap(Map<String, Members> m) {
 		String fileName = "Members.txt";
 		Path path = Paths.get("Fitfolder", fileName);
@@ -134,6 +155,10 @@ public class FileIOHelper {
 
 	}
 
+	/*
+	 * This method writes to the Clubs.txt file. it works exactly in the same way as
+	 * the writeToFileMap method, only it's iterating through an ArrayList.
+	 */
 	public static void writeToFileList(List<Club> c) {
 		String fileName = "Clubs.txt";
 		Path path = Paths.get("Fitfolder", fileName);
@@ -141,7 +166,7 @@ public class FileIOHelper {
 		File file = path.toFile();
 		PrintWriter output = null;
 		try {
-			output = new PrintWriter(new FileOutputStream(file, false)); // fix me maybe???
+			output = new PrintWriter(new FileOutputStream(file, false));
 			for (Club clubs : c) {
 				output.println(clubs);
 			}
@@ -154,6 +179,10 @@ public class FileIOHelper {
 
 	}
 
+	/*
+	 * This method writes to the Time.txt file the time after being incremented by
+	 * one month.
+	 */
 	public static void writeToFileTime(Calendar c) {
 		String fileName = "Time.txt";
 		Path path = Paths.get("Fitfolder", fileName);
@@ -171,6 +200,10 @@ public class FileIOHelper {
 		}
 	}
 
+	/*
+	 * This method is always called at the beginning of the program so that new
+	 * users downloading our software will have this file automatically created.
+	 */
 	public static void createOurFiles(String fileName) {
 		Path path = Paths.get("FitFolder", fileName);
 
@@ -183,6 +216,10 @@ public class FileIOHelper {
 		}
 	}
 
+	/*
+	 * This method is always called at the beginning of the program so that new
+	 * users downloading our software will have this folder automatically created.
+	 */
 	public static void createDir() {
 		String dirPath = "FitFolder";
 		Path folder = Paths.get(dirPath);
@@ -195,5 +232,4 @@ public class FileIOHelper {
 			}
 		}
 	}
-
 }

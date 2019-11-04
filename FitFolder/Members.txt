@@ -1,4 +1,9 @@
 C518,Creed,false,15.05,Lunk-free Zone,333 Fourth St
-J209,Jim,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St]
-P567,Pam,false,99.99,1,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St]
+D441,David Wallace,false,15.05,Corporate,1345 Sixth Avenue, New York City, NY
+D472,Darryl,false,15.05,The Warehouse Gym (Dunder-Mifflin),1725 Slough Ave, Scranton, PA
+J209,Jim,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St, Schrute Farms,18431 Main Street, Honesdale, PA, The Warehouse Gym (Dunder-Mifflin),1725 Slough Ave, Scranton, PA, Corporate,1345 Sixth Avenue, New York City, NY]
+M264,Michael,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St, Schrute Farms,18431 Main Street, Honesdale, PA, The Warehouse Gym (Dunder-Mifflin),1725 Slough Ave, Scranton, PA, Corporate,1345 Sixth Avenue, New York City, NY]
+M659,Meredith,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St, Schrute Farms,18431 Main Street, Honesdale, PA, The Warehouse Gym (Dunder-Mifflin),1725 Slough Ave, Scranton, PA, Corporate,1345 Sixth Avenue, New York City, NY]
+P567,Pam,false,99.99,1,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St, Schrute Farms,18431 Main Street, Honesdale, PA, The Warehouse Gym (Dunder-Mifflin),1725 Slough Ave, Scranton, PA, Corporate,1345 Sixth Avenue, New York City, NY]
 S106,Stanley,false,15.05,Lunk-free Zone,333 Fourth St
+T108,Toby,false,99.99,0,[Planet Fitness,1234 Woodward Ave, Golds Gym,5678 Main St, The Jacked Ones,532 Mount Branch, Lunk-free Zone,333 Fourth St, Schrute Farms,18431 Main Street, Honesdale, PA, The Warehouse Gym (Dunder-Mifflin),1725 Slough Ave, Scranton, PA, Corporate,1345 Sixth Avenue, New York City, NY]
