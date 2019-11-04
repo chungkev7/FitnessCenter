@@ -240,9 +240,13 @@ public class MainApp {
 				System.out.println();
 				break;
 			case 7: 
-				userId = Validator.getStringMatchingRegex(scnr, "\nTo change your membership status, please confirm your member ID: ", "[A-Z][\\d]{3}");
-				String name2 = membersMap.get(userId).getName();
-				changeMembership(scnr, userId, membersMap, clubsList, name2);
+				try {
+					userId = Validator.getStringMatchingRegex(scnr, "\nTo change your membership status, please confirm your member ID: ", "[A-Z][\\d]{3}");
+					String name2 = membersMap.get(userId).getName();
+					changeMembership(scnr, userId, membersMap, clubsList, name2);
+				} catch (NullPointerException e) {
+					System.out.println("\nThe ID used was not in our system\n");
+				}
 			case 8: // quits the program and resets everyone's checked-in status to false
 				checkOutAll(membersMap);
 				break;
