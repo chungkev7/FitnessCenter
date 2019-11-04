@@ -54,6 +54,7 @@ public class MainApp {
 			case 1: // checks in user
 				int counter = 1;
 				System.out.println("");
+				// this prints out all of the clubs in the clubsList
 				for (Club c : clubsList) {
 					System.out.printf("%d. %s\n", counter++, c.getName());
 				}
@@ -61,7 +62,7 @@ public class MainApp {
 
 				clubChoice = Validator.getInt(scnr, "Enter the branch number: ", 1, clubsList.size());
 				userId = Validator.getStringMatchingRegex(scnr, "Please enter your member ID: ", "[A-Z][\\d]{3}");
-
+				// instanceof == checks if they are a single or multi class member
 				if (membersMap.get(userId) instanceof Single) {
 					membersMap.get(userId).checkIn(clubsList.get(clubChoice - 1));
 				} else if (membersMap.get(userId) instanceof Multi) {
@@ -84,6 +85,7 @@ public class MainApp {
 						Dec.set(2019, 11, 1, 16, 04, 05);
 						Calendar Jan = Calendar.getInstance();
 						Jan.set(2020, 0, 1, 16, 04, 05);
+						// this checks to see if the "current" month is the same as january or december
 						if (calendar.get(Calendar.MONTH) == Dec.get(Calendar.MONTH)) {
 							bill = bill * 0.66;
 							holidayMessage = "Merry Christmas!";
@@ -91,6 +93,7 @@ public class MainApp {
 							bill = bill * 1.33;
 							holidayMessage = "Happy New Year!";
 						}
+						// this prints out the bill adjusted after the discount (if any)
 						System.out.printf("\nYour bill this month is: $%.2f. %s\n\n", bill, holidayMessage);
 					} else if (membersMap.get(billingId) instanceof Multi) {
 						double bill = membersMap.get(billingId).getMonthlyFee();
@@ -106,6 +109,8 @@ public class MainApp {
 							bill = bill * 1.33;
 							holidayMessage = "Happy New Year!";
 						}
+						// this prints out the bill adjusted after the discount (if any)
+						// this prints out the points if multi member
 						System.out.printf("\nYour bill this month is: $%.2f. %s\n", bill, holidayMessage);
 						if (points == 1) {
 							System.out.println("You have " + points + " point\n");
@@ -125,6 +130,7 @@ public class MainApp {
 					userId = Validator.getStringMatchingRegex(scnr, "Please enter your member ID: ", "[A-Z][\\d]{3}");
 					if (membersMap.containsKey(userId)) {
 						if (membersMap.get(userId) instanceof Single) {
+							// this splits the info for all members to be easily displayed
 							String[] memberInfo = membersMap.get(userId).toString().split(",");
 							System.out.printf("\n%s %s\n%s %s\n%s %s\n%s $%s\n%s %s\n\n", "Member ID:", memberInfo[0],
 									"Member Name:", memberInfo[1], "Checked In Status:", memberInfo[2], "Monthly Fee:",
@@ -139,6 +145,7 @@ public class MainApp {
 									"Member Name:", memberInfo[1], "Checked In Status:", memberInfo[2], "Monthly Fee:",
 									memberInfo[3]);
 							System.out.print("Clubs: ");
+							// this prints out all of the club names all on one line, separated by commas
 							for (int i = 0; i < clubNames.size(); ++i) {
 								if (i < clubNames.size() - 1) {
 									System.out.print(clubNames.get(i) + ", ");
@@ -279,6 +286,7 @@ public class MainApp {
 				userName = Validator.getString(scnr, "What is your name? ");
 				ID = generateID(userName);
 			} while (userName.isEmpty());
+			// this creates a new member and adds them to the membersMap
 			Members m = new Single(ID, userName);
 			membersMap.put(m.getId(), m);
 			int clubCounter = 1;
@@ -291,11 +299,13 @@ public class MainApp {
 					clubsList.size());
 			System.out.println("\nYou selected: " + clubsList.get(userChoice - 1));
 			clubsList.get(userChoice - 1).getMembers().add(m);
+			// this sets the members club to their selected choice
 			((Single) m).setClub(clubsList.get(userChoice - 1));
 			System.out.println("This is your new Club ID: " + ID + ". Please remember it. ");
 		} else if (membershipChoice.startsWith("m")) {
 			String userName = Validator.getString(scnr, "What is your name? ");
 			String ID = generateID(userName);
+			// this creates a new multi member and puts them in the membersMap
 			Members m = new Multi(ID, userName, 0);
 			membersMap.put(m.getId(), m);
 			int clubCounter = 1;
@@ -332,7 +342,8 @@ public class MainApp {
 		}
 	}
 	/*
-	 * Overloaded method for addNewMember
+	 * Similar to addNewMember method but it keeps their name and userId
+	 * This only makes changes to their membership status
 	 */
 	public static void switchMembershipStatus(List<Club> clubsList, Map<String, Members> membersMap, Scanner scnr, String userId, String name) {
 		System.out.println(
